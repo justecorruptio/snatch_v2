@@ -29,12 +29,16 @@ DLL.so_find_steals.restype = c_void_p
 def _find_steals(word, pool):
     buff = DLL.so_find_steals(c_char_p(word), c_char_p(pool))
     steals = cast(buff, c_char_p).value.split()
-    DLL.del_steals(buff)
+    DLL.so_free(buff)
     return steals
 
 
 def anagram(letters):
     return _find_steals(letters, '')
+
+
+def is_word(letters):
+    return letters in anagram(letters)
 
 
 def steals_for(word, pool):
@@ -52,11 +56,11 @@ def subtract(big, small):
 
 
 if __name__ == '__main__':
-    print anagram('TEACHER')
+    print steals_for('TEACHER', 'SMMBET')
 
     import timeit
     print timeit.timeit(
-        """anagram('TEACHER')""",
-        setup="""from __main__ import anagram""",
-        number=1000000,
+        """steals_for('TEACHER', 'SMMBET')""",
+        setup="""from __main__ import steals_for""",
+        number=100000,
     )

@@ -107,7 +107,8 @@ int _find_steals(Node * ptr, char * hist, char* limit, char level, FILE * out_fi
     }
 
     for (i = hist[level]; i < ptr->len && !(limit && i > hist[level] + limit[level]); i++)
-        _find_steals(ptr->children[i], hist, limit, level + 1, out_file);
+        if(ptr->children[i])
+            _find_steals(ptr->children[i], hist, limit, level + 1, out_file);
 
     return 0;
 }
@@ -140,7 +141,7 @@ char * so_find_steals(char * word, char * pool){
     return ptr;
 }
 
-void del_steals(char * steals){
+void so_free(char * steals){
     free(steals);
 }
 
