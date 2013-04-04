@@ -24,6 +24,7 @@ WORD_LIST = os.path.join(BASE_DIR, 'data/twl06.txt')
 DLL = CDLL(TEMP_FILE_SO.name)
 DLL.so_initialize(c_char_p(WORD_LIST))
 DLL.so_find_steals.restype = c_void_p
+DLL.so_free.argtypes = [c_void_p]
 
 
 def _find_steals(word, pool):
