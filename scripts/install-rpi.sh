@@ -55,3 +55,5 @@ command=/usr/local/snatch/run_tornado.py
 echo -e "${A}Starting services${Z}"
 /etc/init.d/supervisor start
 supervisorctl start tornado
+
+echo -e "${A}Done${Z}"
