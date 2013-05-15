@@ -56,4 +56,4 @@ echo -e "${A}Starting services${Z}"
 /etc/init.d/supervisor start
 supervisorctl start tornado
 
-echo -e "${A}Done${Z}"
+echo -e "${A}Done initializing Raspberry pi.${Z}"
