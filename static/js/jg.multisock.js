@@ -13,10 +13,11 @@
 
             ms.sock.onmessage = function(e){
                 console.debug(e);
-                if (!ms.router[e.data.route]){
+                var data = $.parseJSON(e.data);
+                if (!ms.router[data.route]){
                     return;
                 }
-                return ms.router[e.data.route](e.data);
+                return ms.router[data.route](data);
             };
 
             ms.bind = function(route, func){

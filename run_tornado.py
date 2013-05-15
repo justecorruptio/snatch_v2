@@ -1,4 +1,8 @@
+#!/usr/bin/env python
+
 import json
+import os
+import random
 import time
 
 import tornadoredis
@@ -26,39 +30,25 @@ class ServertimeHandler(tornado.web.RequestHandler):
         })
 
 
-pub_client = tornadoredis.Client()
-pub_client.connect()
-
 class MessageHandler(sockjs.tornado.SockJSConnection):
+
+    clients = set()
 
     def __init__(self, *args, **kwargs):
         super(MessageHandler, self).__init__(*args, **kwargs)
-        self.listen()
 
-    @tornado.gen.engine
-    def listen(self):
-        self.client = tornadoredis.Client()
-        self.client.connect()
-        yield tornado.gen.Task(self.client.subscribe, 'test_chan')
-        self.client.listen(self.on_sub)
 
-    def on_sub(self, msg):
-        if msg.kind != 'message':
-            return
-        self.send({
-            'route': 'test_chan',
-            'message': msg.body,
-            'time': time.time() * 1000,
-            })
+    def on_open(self, info):
+        self.clients.add(self)
+
 
     def on_message(self, msg):
-        data = json.loads(msg)
-        pub_client.publish('test_chan', data['message']);
+        #os.system('/usr/local/flask_snatch/blink1-tool -m 1 --rgb %d,%d,%d &' %
+        #    (random.randint(0,255),random.randint(0,255),random.randint(0,255),))
+        self.broadcast(self.clients, msg)
 
     def on_close(self):
-        if self.client.subscribed:
-            self.client.unsubscribe('test_chan')
-            self.client.disconnect()
+        self.clients.remove(self)
 
 
 app = tornado.web.Application(
