@@ -11,10 +11,6 @@ Z='\e[0m'
 
 echo -e "${A}Initializing Raspberry Pi${Z}"
 
-echo -e "${A}Stopping services${Z}"
-supervisorctl stop tornado
-/etc/init.d/supervisor stop
-
 echo -e "${A}Installing packages from apt${Z}"
 if [ ! -e /tmp/.apt_is_updated ] ; then apt-get update; fi
 touch /tmp/.apt_is_updated
@@ -22,6 +18,10 @@ apt-get -y install git python-pip supervisor
 
 echo -e "${A}Installing packages from pip${Z}"
 pip install tornado sockjs-tornado
+
+echo -e "${A}Stopping services${Z}"
+supervisorctl stop tornado
+/etc/init.d/supervisor stop
 
 echo -e "${A}Installing server from git${Z}"
 cd /usr/local
@@ -49,7 +49,6 @@ command=/usr/local/snatch/run_tornado.py
 ' > /etc/supervisor/supervisord.conf
 
 echo -e "${A}Starting services${Z}"
-rm /var/run/supervisor.sock
 /etc/init.d/supervisor start
 supervisorctl start tornado
 
