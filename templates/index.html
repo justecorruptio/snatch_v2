@@ -1,0 +1,48 @@
+<html>
+<head>
+<title>Snatch v2</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+<script src="/static/waterbug.js"></script>
+
+<script src="/static/js/jquery.servertime.js"></script>
+<script src="/static/js/jg.multisock.js"></script>
+<script src="/static/js/jg.tictactoe.js"></script>
+
+<style>
+    #jg_pane {
+        width: 306px;
+        height: 306px;
+        border: 0px;
+        margin: 0px;
+        padding: 1px;
+        background-color: black;
+    }
+    .tictactoe_button {
+        width: 100px;
+        height: 100px;
+        display: inline-block;
+        border: 0px;
+        margin: 1px;
+        padding: 0px;
+        float: left;
+        background-color: gray;
+        font-size: 90;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+<div id='jg_pane'></div>
+<div id='latency'></div>
+<script>
+var servertime = $.servertime('/servertime');
+
+var multiSock = JG.multiSock('/s');
+
+var ttt = JG.tictactoe($('#jg_pane'), multiSock);
+ttt.render();
+
+</script>
+</body>
+</html>
