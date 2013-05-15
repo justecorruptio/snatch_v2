@@ -19,13 +19,10 @@ rm /var/run/supervisor.sock
 echo -e "${A}Installing packages from apt${Z}"
 if [ ! -e /tmp/.apt_is_updated ] ; then apt-get update; fi
 touch /tmp/.apt_is_updated
-apt-get -y install git
-apt-get -y install python-pip
-apt-get -y install supervisor
+apt-get -y install git python-pip supervisor
 
 echo -e "${A}Installing packages from pip${Z}"
-pip install tornado
-pip install sockjs-tornado
+pip install tornado sockjs-tornado
 
 echo -e "${A}Installing server from git${Z}"
 cd /usr/local
