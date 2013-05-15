@@ -5,8 +5,6 @@ import os
 import random
 import time
 
-import tornadoredis
-
 import tornado.gen
 import tornado.httpserver
 import tornado.ioloop
