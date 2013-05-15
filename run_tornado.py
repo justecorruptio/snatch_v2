@@ -3,11 +3,13 @@
 import json
 import os
 import random
+import socket
 import time
 
 import tornado.gen
 import tornado.httpserver
 import tornado.ioloop
+import tornado.netutil
 import tornado.template
 import tornado.web
 import tornado.websocket
@@ -59,5 +61,8 @@ app = tornado.web.Application(
 )
 
 if __name__ == "__main__":
-    app.listen(80)
+    from tornado.httpserver import HTTPServer
+    server = HTTPServer(app)
+    socks = tornado.netutil.bind_sockets(port=80, family=socket.AF_INET)
+    server.add_sockets(socks)
     tornado.ioloop.IOLoop.instance().start()
