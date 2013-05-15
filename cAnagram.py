@@ -9,9 +9,9 @@ import os.path
 import tempfile
 import sys
 
-BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+import settings
 
-STEAL_SERVER_PATH = os.path.join(BASE_DIR, 'c/steal_server.c')
+STEAL_SERVER_PATH = os.path.join(settings.BASE_DIR, 'c/steal_server.c')
 
 TEMP_FILE_O = tempfile.NamedTemporaryFile(suffix='.o')
 TEMP_FILE_SO = tempfile.NamedTemporaryFile(suffix='.so')
@@ -19,7 +19,7 @@ TEMP_FILE_SO = tempfile.NamedTemporaryFile(suffix='.so')
 os.system("""gcc -c -fPIC -O3 -o %s %s""" % (TEMP_FILE_O.name, STEAL_SERVER_PATH))
 os.system("""gcc -shared -lc -o %s %s""" % (TEMP_FILE_SO.name, TEMP_FILE_O.name))
 
-WORD_LIST = os.path.join(BASE_DIR, 'data/twl06.txt')
+WORD_LIST = os.path.join(settings.BASE_DIR, 'data/twl06.txt')
 
 DLL = CDLL(TEMP_FILE_SO.name)
 DLL.so_initialize(c_char_p(WORD_LIST))
