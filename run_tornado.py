@@ -18,11 +18,20 @@ import sockjs.tornado
 
 import settings
 
-class IndexHandler(tornado.web.RequestHandler):
+class MiddlewareMixin(object):
+    def prepare(self):
+        appsession = self.get_cookie('RASPIN')
+
+        if appsession is None:
+            self.set_cookie('RASPIN', '%08x' % (random.getrandbits(32),))
+
+
+class IndexHandler(MiddlewareMixin, tornado.web.RequestHandler):
     def get(self):
         self.render( 'index.html')
 
-class ServertimeHandler(tornado.web.RequestHandler):
+
+class ServertimeHandler(MiddlewareMixin, tornado.web.RequestHandler):
     def get(self):
         self.write({
             'a': self.get_argument('a'),
@@ -59,6 +68,7 @@ app = tornado.web.Application(
     sockjs.tornado.SockJSRouter(MessageHandler, '/s').urls,
     **settings.TORNADO_SETTINGS
 )
+
 
 if __name__ == "__main__":
     from tornado.httpserver import HTTPServer
