@@ -20,10 +20,8 @@ import settings
 
 class MiddlewareMixin(object):
     def prepare(self):
-        appsession = self.get_cookie('RASPIN')
-
-        if appsession is None:
-            self.set_cookie('RASPIN', '%08x' % (random.getrandbits(32),))
+        appsession = self.get_cookie('RASPIN', '%08x' % (random.getrandbits(32),))
+        self.set_cookie('RASPIN', appsession)
 
 
 class IndexHandler(MiddlewareMixin, tornado.web.RequestHandler):
