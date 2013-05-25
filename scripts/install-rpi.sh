@@ -14,7 +14,7 @@ echo -e "${A}Initializing Raspberry Pi${Z}"
 echo -e "${A}Installing packages from apt${Z}"
 if [ ! -e /tmp/.apt_is_updated ] ; then apt-get update; fi
 touch /tmp/.apt_is_updated
-apt-get -y install git python-pip supervisor
+apt-get -y install git python-pip supervisor ntpdate
 
 echo -e "${A}Installing packages from pip${Z}"
 pip install tornado sockjs-tornado
